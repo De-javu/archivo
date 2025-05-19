@@ -24,7 +24,7 @@ class Login extends Component
     public bool $remember = false;
 
     /**
-     * Handle an incoming authentication request.
+     *  Gestionar una solicitud de autenticación entrante.
      */
     public function login(): void
     {
@@ -47,7 +47,7 @@ class Login extends Component
     }
 
     /**
-     * Ensure the authentication request is not rate limited.
+     * Asegúrese de que la solicitud de autenticación no tenga límite de velocidad.
      */
     protected function ensureIsNotRateLimited(): void
     {
@@ -68,7 +68,7 @@ class Login extends Component
     }
 
     /**
-     * Get the authentication rate limiting throttle key.
+     * Obtenga la clave de limitación de la tasa de autenticación por medio de la ip.
      */
     protected function throttleKey(): string
     {

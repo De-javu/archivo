@@ -16,6 +16,16 @@
             :placeholder="__('Full name')"
         />
 
+        <!--  Last Name -->
+        <flux:input
+            wire:model="last_name"
+            :label="__('Last name')"
+            type="text"
+            required
+            autocomplete="family-name"
+            :placeholder="__('Last name')"
+        />
+
         <!-- Email Address -->
         <flux:input
             wire:model="email"
@@ -49,7 +59,7 @@
         />
 
         <div class="flex items-center justify-end">
-            <flux:button type="submit" variant="primary" class="w-full">
+            <flux:button type="submit" variant="danger" class="w-full">
                 {{ __('Create account') }}
             </flux:button>
         </div>
