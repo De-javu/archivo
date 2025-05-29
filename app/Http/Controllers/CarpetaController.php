@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCarpetaRequest;
 use App\Models\Carpeta;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\Request;
 
 class CarpetaController extends Controller
@@ -12,7 +14,8 @@ class CarpetaController extends Controller
      */
     public function index()
     {
-  return view('mi_unidad.index');
+        $carpetas = Carpeta::all();
+      return view('mi_unidad.index', compact('carpetas'));
     }
 
     /**
@@ -26,10 +29,11 @@ class CarpetaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function store(StoreCarpetaRequest $request)
+{
+    Carpeta::create(['nombre' => $request->nombre]);
+    return redirect()->route('mi_unidad.index')->with('success', 'Carpeta creada');
+}
 
     /**
      * Display the specified resource.

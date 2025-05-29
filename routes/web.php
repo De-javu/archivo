@@ -28,6 +28,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware((['auth']))->prefix('/dashboard')->group(function () {
     Route::get('/mi_unidad',[ CarpetaController::class, 'index'])->name('mi_unidad.index');
+    Route::post('/mi_unidad', [CarpetaController::class, 'store'])->name('mi_unidad.store');
+
  
 });
 
