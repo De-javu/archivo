@@ -1,7 +1,7 @@
 <x-layouts.app>
     {{-- Extiende el layout principal --}}
     <x-slot name="title">
-        {{ __('My Unit') }}
+        {{ __('Sub_Carpeta') }}
     </x-slot>
 
     {{-- mensaje de éxito --}}
@@ -16,12 +16,25 @@
         }, 3000);
     @endif
 
+        <div class="inline-block  ">
+            
+        <h1 class=" flex item-center text-2xl font-bold text-white-700 m-4 ">
+        <x-icon name="folder" class="mr-2" />{{ $carpeta->nombre}}
+        
+        </h1>
+        <a href="{{ route('mi_unidad.index') }}"
+         class="text-blue-600 hover:underline   ">
+            {{ __('Volver') }}
+        </a>
+    </div>
+
     <!-- Botón para abrir el modal -->
+
     <div class="flex justify-end mb-4">
         <button onclick="document.getElementById('modal').style.display='flex'"
             class="mb-4 bg-gray-600 text-white px-4 py-2 rounded flex items-center">
             <x-icon name="folder" class="mr-2" />
-            {{ __('Create Unit') }}
+            {{ __('Sub Carpeta') }}
         </button>
         
     </div>
@@ -30,9 +43,10 @@
     <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded shadow-lg w-full max-w-md mx-auto flex flex-col">
             <h2
-             class="text-lg font-bold mb-4 text-gray-600">{{ __('Crear nueva carpeta') }}
+             class="text-lg font-bold mb-4 text-gray-600">{{ __('SUB CARPETA') }}
+             value="{{ $carpeta->id }}"
            </h2>
-            <form action="{{ route('mi_unidad.store') }}" method="POST">
+            <form action="{{ route('mi_unidad.subcarpeta', ['carpeta' => $carpeta->id])}}" method="POST">
                 @csrf
 
                 <input type="text" name="nombre" placeholder="Nombre de la carpeta"
@@ -40,6 +54,7 @@
                 @error('nombre')
                     <div class="text-red-500 text-xs mb-2">{{ $message }}</div>
                 @enderror
+                <input type="text" value={{$carpeta->id}} name="carpeta_padre_id" hidden>
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="document.getElementById('modal').style.display='none'"
                         class="px-4 py-2 bg-gray-600 text-white rounded">
