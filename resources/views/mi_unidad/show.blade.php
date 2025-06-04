@@ -19,7 +19,7 @@
         <div class="inline-block  ">
             
         <h1 class=" flex item-center text-2xl font-bold text-white-700 m-4 ">
-        <x-icon name="folder" class="mr-2" />{{ $carpeta->nombre}}
+        <x-heroicon-o-folder class="w-6 h-6 text-blue-600" />{{ $carpeta->nombre}}
         
         </h1>
         <a href="{{ route('mi_unidad.index') }}"
@@ -33,7 +33,7 @@
     <div class="flex justify-end mb-4">
         <button onclick="document.getElementById('modal').style.display='flex'"
             class="mb-4 bg-gray-600 text-white px-4 py-2 rounded flex items-center">
-            <x-icon name="folder" class="mr-2" />
+         <x-heroicon-o-folder class="w-6 h-6 text-blue-600" />
             {{ __('Sub Carpeta') }}
         </button>
         
@@ -81,12 +81,12 @@
      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-2 m-2">
         @foreach($subcarpetas as $subcarpeta)
             <div class="flex items-center p-4 border rounded bg-gray-50">
-                <x-icon name="folder" class="mr-2 text-blue-600" />
+                <x-heroicon-o-folder class="w-6 h-6 text-blue-600" />
                 <span class="text-gray-700">{{ $subcarpeta->nombre }}</span>
                 <button                   
                     class="ml-auto flex items-center px-4 py-4 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
                     <a href="{{ route('mi_unidad.carpeta', $carpeta->id) }}" class="flex items-center">
-                        <x-icon name="folder-open" class="mr-2" />
+                   <x-heroicon-o-folder class="w-6 h-6 text-blue-600" />
                         <span class="hidden sm:inline">Abril</span>
                     </a>
                 </button>
