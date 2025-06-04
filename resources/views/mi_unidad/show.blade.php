@@ -75,14 +75,14 @@
     <!-- Lista de carpetas (opcional, si tienes $carpetas) -->
 
 
-@if(isset($carpetas) && count($carpetas))
+@if(isset($subcarpetas) && count($subcarpetas))
     <h2 class="font-bold mb-2 mt-6">CARPETAS:</h2>
     <hr>
      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-2 m-2">
-        @foreach($carpetas as $carpeta)
+        @foreach($subcarpetas as $subcarpeta)
             <div class="flex items-center p-4 border rounded bg-gray-50">
                 <x-icon name="folder" class="mr-2 text-blue-600" />
-                <span class="text-gray-700">{{ $carpeta->nombre }}</span>
+                <span class="text-gray-700">{{ $subcarpeta->nombre }}</span>
                 <button                   
                     class="ml-auto flex items-center px-4 py-4 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
                     <a href="{{ route('mi_unidad.carpeta', $carpeta->id) }}" class="flex items-center">

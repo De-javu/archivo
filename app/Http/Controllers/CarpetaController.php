@@ -15,7 +15,9 @@ class CarpetaController extends Controller
      */
     public function index()
     {
-        $carpetas = Carpeta::all();
+        $carpetas = Carpeta::whereNull('carpeta_padre_id')
+            ->with(['carpetasHijas', 'archivos'])
+            ->get();
       return view('mi_unidad.index', compact('carpetas'));
     }
 
@@ -42,8 +44,10 @@ class CarpetaController extends Controller
      */
     public function show(Carpeta $carpeta)
     {
+        
         $carpeta = Carpeta::with('archivos')->findOrFail($carpeta->id);
-        return view('mi_unidad.show', compact('carpeta'));
+        $subcarpetas = Carpeta::with('carpetasHijas')->where('carpeta_padre_id', $carpeta->id)->get();
+        return view('mi_unidad.show', compact('carpeta', 'subcarpetas'));
     }
 
     /**

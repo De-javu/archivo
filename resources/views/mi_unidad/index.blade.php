@@ -26,7 +26,8 @@
         
     </div>
 
-    <!-- Modal -->
+     
+    
     <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded shadow-lg w-full max-w-md mx-auto flex flex-col">
             <h2
@@ -57,7 +58,7 @@
 
     
 
-    <!-- Lista de carpetas (opcional, si tienes $carpetas) -->
+    {{--Lista de carpetas (opcional, si tienes $carpetas) --}}
 
 
 @if(isset($carpetas) && count($carpetas))
@@ -83,7 +84,7 @@
 
 
 
-    <!-- Script para cerrar el modal al hacer click fuera del contenido -->
+    {{-- Script para cerrar el modal al hacer click fuera del contenido --}}
     <script>
         document.addEventListener('click', function (event) {
             var modal = document.getElementById('modal');

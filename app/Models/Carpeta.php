@@ -8,7 +8,7 @@ class Carpeta extends Model
 
  // se crea el modelo de la tabla carpetas para que almacene la informacion 
 {
-    protected $fillable = ['nombre', 'carpetas_padre_id']; // Son los campos que se llenaran en la base de datos
+    protected $fillable = ['nombre', 'carpeta_padre_id']; // Son los campos que se llenaran en la base de datos
 
             public function carpetasHijas() // funcion de relacion uno a muchos
             {
