@@ -12,7 +12,8 @@ class Carpeta extends Model
 
             public function carpetasHijas() // funcion de relacion uno a muchos
             {
-              return $this->hasMany(Carpeta::class, 'carpeta_padre_id'); // una carpeta puede tener muchas carpetas hijas
+              return $this->hasMany(Carpeta::class, 'carpeta_padre_id'); 
+              // una carpeta puede tener muchas carpetas hijas, la llave es 'carpeta_padre_id'
             }
 
             public function archivos()// funcion de relacion uno a muchos

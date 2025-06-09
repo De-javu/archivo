@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
@@ -16,17 +12,24 @@
                 <x-app-logo />
             </a>
 
-            <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-            
-                 <flux:navlist.item 
-                 icon="folder" 
-                 :href="route('mi_unidad.index')" 
-                 :current="request()->routeIs('mi_unidad.index')"
-                  wire:navigate>{{ __('Folders') }}</flux:navlist.item>
-                </flux:navlist.group>
-            </flux:navlist>
+     {{-- En este lugar se crean las vistas de la aplicación, como el dashboard y las carpetas de "Mi Unidad", o las que se desean crear. --}}
+        <flux:navlist variant="outline">
+            <flux:navlist.group :heading="__('Platform')" class="grid">
+                <flux:navlist.item
+                     icon="home" :href="route('dashboard')" 
+                     :current="request()->routeIs('dashboard')" 
+                     wire:navigate>{{ __('Dashboard') }}
+                </flux:navlist.item>
+    
+           {{-- Creacion de carpetas y vistas de la aplicación      --}}
+                <flux:navlist.item 
+                    icon="folder" 
+                    :href="route('mi_unidad.index')" 
+                    :current="request()->routeIs('mi_unidad.index')"
+                    wire:navigate>{{ __('Folders') }}
+                </flux:navlist.item>
+            </flux:navlist.group>
+        </flux:navlist>
 
             <flux:spacer />
 

@@ -65,15 +65,15 @@
                 <div class="flex items-center p-2 border rounded bg-gray-300 hover:bg-gray-100 transition">
                     {{-- Enlace a la carpeta --}}
                     <a href="{{ route('mi_unidad.carpeta', $carpeta->id) }}"
-                        class="flex items-center text-gray-700 hover:text-blue-600 transition">
-                        <x-heroicon-o-folder class="w-12 h-12 text-blue-600 hover:text-blue-200" />
+                        class="flex items-center text-gray-700 hover:text-yellow-600 transition">
+                        <x-heroicon-o-folder class="w-12 h-12 text-black-600 hover:text-blue-200" />
                         <span class="text-gray-900 m-2 hover:text-gray-400">{{ $carpeta->nombre }}</span>
                     </a>
 
                     <div class="flex items-center ml-auto space-x-2 relative">
                         <!-- Botón principal -->
                         <button onclick="toggleDropdown({{ $carpeta->id }})" type="button"
-                            class="flex items-center px-4 py-4 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                            class="flex items-center px-4 py-4 bg-gray-900 text-white rounded hover:bg-gray-500 transition">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -84,6 +84,14 @@
                         <!-- Dropdown -->
                         <div id="dropdown-menu-{{ $carpeta->id }}"
                             class="hidden absolute left-0 mt-12 w-40 bg-white border rounded shadow-lg z-10">
+                            <a href="{{ route('mi_unidad.carpeta', $carpeta->id) }}" class="px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
+                                </svg>
+                                      <span class="text-gray-900 m-2 hover:text-gray-400">Abrir</span>
+                            </a>
                             <a href="#" class="px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                                     <path

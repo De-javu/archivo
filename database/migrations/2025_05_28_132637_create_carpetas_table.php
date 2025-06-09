@@ -13,12 +13,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Se crea la tabla para almacenar las columnas de la tabla carpetas
         Schema::create('carpetas', function (Blueprint $table) {
+
+            // Se define la estructura de la tabla carpetas
             $table->id(); // Se define una columna 'id'
             $table->string('nombre'); // se define una columna 'nombre' de tipo string
-
-            $table->unsignedBigInteger('carpeta_padre_id') // Se define una columna 'carpeta_padre_id' de tipo unsignedBigInteger para gran tamaño
-            ->nullable();// Permte que una carpeta no tenga carpeta padre, dando felxibilidad a la estructura jerárquica
+             
+        
+            // Se crea la columna que Permite que una carpeta pueda tener una carpeta padre, creando una estructura de árbol
+            $table->unsignedBigInteger('carpeta_padre_id')  // Se define una columna 'carpeta_padre_id' de tipo unsignedBigInteger para gran tamaño
+            ->nullable();// Permte que una carpeta no tenga carpeta padre, dando felxibilidad a la estructura jerárquica llena la columna con null si no tiene carpeta padre
         
             
             $table->foreign('carpeta_padre_id')// Define una columna 'carpeta_padre_id' sera una clave foránea
@@ -27,12 +32,12 @@ return new class extends Migration
             ->onUpdate('cascade') // Si se actualiza una carpeta, se actualizarán también sus subcarpetas
             ->onDelete('cascade'); // Si se elimina una carpeta, se eliminarán también sus subcarpetas
         
-            $table->timestamps();
+            $table->timestamps(); // Crea las columnas 'created_at' y 'updated_at' para almacenar las fechas de creación y actualización de cada carpeta
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Se crea el metodo que s e encraga de revertir la migración
      */
     public function down(): void
     {
