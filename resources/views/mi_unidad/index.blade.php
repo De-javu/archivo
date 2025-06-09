@@ -28,7 +28,8 @@
 
     <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
         <div class="bg-white p-6 rounded shadow-lg w-full max-w-md mx-auto flex flex-col">
-            <h2 class="text-lg font-bold mb-4 text-gray-600">{{ __('Crear nueva carpeta') }}
+            <h2 class="text-lg font-bold mb-4 text-gray-600">
+                {{ __('Crear nueva carpeta') }}
             </h2>
             <form action="{{ route('mi_unidad.store') }}" method="POST">
                 @csrf
@@ -36,7 +37,9 @@
                 <input type="text" name="nombre" placeholder="Nombre de la carpeta"
                     class="border rounded px-3 py-2 w-full mb-4  text-gray-600" required>
                 @error('nombre')
-                    <div class="text-red-500 text-xs mb-2">{{ $message }}</div>
+                    <div class="text-red-500 text-xs mb-2">
+                        {{ $message }}
+                    </div>
                 @enderror
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="document.getElementById('modal').style.display='none'"
@@ -50,7 +53,6 @@
             </form>
         </div>
     </div>
-    </form>
     <hr>
 
     {{--Lista de carpetas (opcional, si tienes $carpetas) --}}
@@ -62,12 +64,27 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-1 m-2">
 
             @foreach($carpetas as $carpeta)
-                <div class="flex items-center p-2 border rounded bg-gray-300 hover:bg-gray-100 transition">
+                <div class="flex items-center p-2 border rounded bg-gray-300 hover:bg-gray-100 transition ">
                     {{-- Enlace a la carpeta --}}
+
+
                     <a href="{{ route('mi_unidad.carpeta', $carpeta->id) }}"
                         class="flex items-center text-gray-700 hover:text-yellow-600 transition">
                         <x-heroicon-o-folder class="w-12 h-12 text-black-600 hover:text-blue-200" />
-                        <span class="text-gray-900 m-2 hover:text-gray-400">{{ $carpeta->nombre }}</span>
+
+                       {{-- Se crea el boto  para ver por encima d ela carpeta tipo tooltip --}}
+                        <div class="relative group inline-block">
+                            <button>
+                        <span class="text-gray-900 m-2 hover:text-gray-400">
+                            {{ $carpeta->nombre }}
+                        </span>
+                            </button>
+                            <span
+                                class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-max px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition pointer-events-none z-100">
+                                {{ $carpeta->nombre }}
+                            </span>
+                        </div>
+
                     </a>
 
                     <div class="flex items-center ml-auto space-x-2 relative">
@@ -84,21 +101,65 @@
                         <!-- Dropdown -->
                         <div id="dropdown-menu-{{ $carpeta->id }}"
                             class="hidden absolute left-0 mt-12 w-40 bg-white border rounded shadow-lg z-10">
-                            <a href="{{ route('mi_unidad.carpeta', $carpeta->id) }}" class="px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center">
+                            <a href="{{ route('mi_unidad.carpeta', $carpeta->id) }}"
+                                class="px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                     stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
                                 </svg>
-                                      <span class="text-gray-900 m-2 hover:text-gray-400">Abrir</span>
+                                <span class="text-gray-900 m-2 hover:text-gray-400">Abrir</span>
                             </a>
-                            <a href="#" class="px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center">
+
+                            <!-- Se crea el Modela para editar el nombre d ela carpeta-->
+                            <div id="edit-modal-{{$carpeta->id}}"
+                                class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden"
+                                class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden"
+                                onclick="if(event.target === this) this.style.display='none'">
+                                <div class="bg-white p-6 rounded shadow-lg w-full max-w-md mx-auto flex flex-col">
+                                    <h2 class="text-lg font-bold mb-4 text-gray-600">
+                                        {{ __('Cambie el nombre') }}
+                                    </h2>
+                                    <form action="{{ route('mi_unidad.update', $carpeta->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+
+                                        <input type="text" name="nombre" value="{{ $carpeta->nombre }}"
+                                            class="border rounded px-3 py-2 w-full mb-4  text-gray-600" required>
+                                        @error('nombre')
+                                            <div class="text-red-500 text-xs mb-2">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                        <div class="flex justify-end gap-2">
+                                            <button type="button"
+                                                onclick="document.getElementById('edit-modal-{{$carpeta->id}}').style.display='none'"
+                                                class="px-4 py-2 bg-gray-600 text-white rounded">
+                                                {{ __('Cerrar') }}
+                                            </button>
+                                            <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded">
+                                                {{ __('Actualizar') }}
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            {{-- Se crea el dropdown para editar --}}
+                            <a href="#" class="px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center"
+                                onclick="document.getElementById('edit-modal-{{$carpeta->id}}').style.display='flex'">
+
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                                     <path
                                         d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
                                 </svg>
-                                <span class="text-gray-900 m-2 hover:text-gray-400">Editar</span>
+                                <span class="text-gray-900 m-2 hover:text-gray-400">
+                                    Editar
+                                </span>
                             </a>
+
+
+
                             <a href="#" class="px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                     stroke="currentColor" class="size-6">

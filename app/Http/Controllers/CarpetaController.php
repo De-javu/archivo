@@ -65,11 +65,16 @@ class CarpetaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Carpeta $carpeta)
+    public function update(StoreCarpetaRequest $request, Carpeta $carpeta)
     {
-        //
-    }
+       $carpeta = Carpeta::findOrFail($carpeta->id); // Busca la carpeta por su ID y lanza una excepción si no se encuentra
+       $carpeta->nombre = $request->nombre;
+       $carpeta->save();
 
+       return redirect()->route('mi_unidad.index', $carpeta->id)->with('success', 'Carpeta actualizada');
+       
+
+    }
     /**
      * Remove the specified resource from storage.
      */
