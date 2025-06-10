@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mi_unidad/carpeta/{carpeta}',[CarpetaController::class, 'show'])->name('mi_unidad.carpeta');
     Route::post('/mi_unidad/carpeta/{carpeta}',[CarpetaController::class, 'subcarpeta'])->name('mi_unidad.subcarpeta');
     Route::put('/mi_unidad/carpeta/{carpeta}', [CarpetaController::class, 'update'])->name('mi_unidad.update');
- 
+    Route::delete('/mi_unidad/carpeta/{carpeta}', [CarpetaController::class, 'destroy'])->name('mi_unidad.destroy');
 });
 
 require __DIR__.'/auth.php';

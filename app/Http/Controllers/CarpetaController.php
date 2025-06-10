@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteCarpetaRequest;
 use App\Http\Requests\StoreCarpetaRequest;
 use App\Http\Requests\StoreSubCarpetaRequest;
 use App\Models\Carpeta;
@@ -78,15 +79,18 @@ class CarpetaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Carpeta $carpeta)
+    public function destroy(DeleteCarpetaRequest $request, Carpeta $carpeta)
     {
-        //
+       
+
+        $carpeta = Carpeta::findOrFail($carpeta->id); // Busca la carpeta por su ID y lanza una excepción si no se encuentra
+        $carpeta->delete(); // Elimina la carpeta de la base de datos
+
+        return redirect()->route('mi_unidad.index')->with('success', 'Carpeta eliminada'); // Redirige a la ruta 'mi_unidad.index' con un mensaje de éxito
     }
 
     public function subcarpeta(StoreSubCarpetaRequest $request, Carpeta $carpeta)
-    {
-
-        
+    {        
        $carpeta = new Carpeta();
        $carpeta->nombre = $request->nombre;
        $carpeta->carpeta_padre_id = $request->carpeta_padre_id;
