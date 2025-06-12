@@ -6,8 +6,7 @@ use App\Http\Requests\DeleteCarpetaRequest;
 use App\Http\Requests\StoreCarpetaRequest;
 use App\Http\Requests\StoreSubCarpetaRequest;
 use App\Models\Carpeta;
-use Illuminate\Contracts\Cache\Store;
-use Illuminate\Http\Request;
+
 
 class CarpetaController extends Controller
 {
@@ -72,8 +71,20 @@ class CarpetaController extends Controller
        $carpeta->nombre = $request->nombre;
        $carpeta->save();
 
-       return redirect()->route('mi_unidad.index', $carpeta->id)->with('success', 'Carpeta actualizada');
        
+
+       
+      if($carpeta->carpeta_padre_id)
+      {
+        // si la carpeta no tiene una carpeta padre se redigira a la vista de la unidad
+        return redirect()->route('mi_unidad.carpeta', $carpeta->carpeta_padre_id)
+        ->with('success', 'Carpeta actualizada'); // Redirige a la ruta 'mi_unidad.index' con un mensaje de éxito
+      }
+      else
+      {
+        return redirect()->route('mi_unidad.index')
+        ->with('success', 'Carpeta actualizada'); // Redirige a la ruta 'mi_unidad.index' con un mensaje de éxito
+      }
 
     }
     /**
@@ -90,12 +101,27 @@ class CarpetaController extends Controller
     }
 
     public function subcarpeta(StoreSubCarpetaRequest $request, Carpeta $carpeta)
-    {        
-       $carpeta = new Carpeta();
-       $carpeta->nombre = $request->nombre;
-       $carpeta->carpeta_padre_id = $request->carpeta_padre_id;
-       $carpeta->save();
+  
 
-       return redirect()->route('mi_unidad.carpeta', $carpeta->id)->with('success', 'Subcarpeta creada');
+   {
+    // Calcula la profundidad de la subcarpeta
+    $profundidad = 1;
+    $padre = Carpeta::find($request->carpeta_padre_id);
+    while ($padre && $padre->carpeta_padre_id) {
+        $profundidad++;
+        $padre = Carpeta::find($padre->carpeta_padre_id);
+    }
+
+    // Limita la profundidad máxima (por ejemplo, 4)
+    if ($profundidad >= 4) {
+        return redirect()->back()->withErrors(['nombre' => 'No puedes crear más de 4 niveles de subcarpetas.']);
+    }
+
+    $carpeta = new Carpeta();
+    $carpeta->nombre = $request->nombre;
+    $carpeta->carpeta_padre_id = $request->carpeta_padre_id;
+    $carpeta->save();
+
+    return redirect()->route('mi_unidad.carpeta', $carpeta->id)->with('success', 'Subcarpeta creada');
     }
 }
