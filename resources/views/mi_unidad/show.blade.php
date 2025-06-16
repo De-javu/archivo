@@ -39,27 +39,36 @@
         </a>
     </div>
 
-    <!-- Botón para abrir el modal -->
+    <!-- Botón para abrir el modal Para crear unidades -->
 
     <div class="flex justify-end mb-4 ">
         <button onclick="document.getElementById('modal').style.display='flex'"
-            class="mb-4 bg-gray-600 hover:bg-gray-900 text-white px-4 py-5 rounded flex items-center">
+            class="mb-1 bg-gray-600 hover:bg-gray-900 text-white px-1 py-1 rounded flex items-center">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v6m3-3H9m4.06-7.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
         </svg>
         <span class="ml-2">
-            {{ __(' Crear Sub Carpeta') }}
+            {{ __(' Crear Carpeta') }}
         </span>
-        </button>
-        
+        </button>    
+     
+        <button onclick="document.getElementById('modal-dropzone').style.display='flex'"
+            class="mb-1 bg-gray-600 hover:bg-gray-900 text-white px-1 py-1 rounded flex items-center">
+         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v6m3-3H9m4.06-7.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
+        </svg>
+        <span class="ml-2">
+            {{ __(' Cargar Archivos') }}
+        </span>
+        </button>        
     </div>
 
-    <!--Modal -->
+    <!--Modal para crear sub carpetas-->
             <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
                 <div class="bg-white p-6 rounded shadow-lg w-full max-w-md mx-auto flex flex-col">
                     <h2
-                        class="text-lg font-bold mb-4 text-gray-600">{{ __('SUB CARPETA') }}
-                        value="{{ $carpeta->id }}"
+                        class="text-lg font-bold mb-4 text-gray-600">{{ __('CREAR NUEVA CARPETA EN:') }}
+                        {{ $carpeta->nombre}}
                     </h2>
                     <form action="{{ route('mi_unidad.subcarpeta', ['carpeta' => $carpeta->id])}}" method="POST">
                         @csrf
@@ -83,7 +92,23 @@
                         </div>
                 </div>
 
-                <hr>
+       <!--Modal para subir archivos con la librearia dropzone-->
+            <div id="modal-dropzone" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+                <div class="bg-white p-6 rounded shadow-lg w-full max-w-md mx-auto flex flex-col">
+                    <h2
+                        class="text-lg font-bold mb-4 text-gray-600">{{ __('CARGAR ARCHIVO EN LA CARPETA: ') }}
+                        {{ $carpeta->nombre }}"
+                    </h2>
+                    <form action="#" class="dropzone" id="mi-dropzone" enctype="multipart/form-data" method="POST">
+                        @csrf    
+                        <div class="fallback">                      
+                            <input type="file" name="file" multiple class="border rounded px-3 py-2 w-full mb-4  text-gray-600">   
+                        </div>         
+                    </form>                 
+                </div>
+            </div>
+
+    <hr>
 
 
 
