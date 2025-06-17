@@ -99,12 +99,15 @@
                         class="text-lg font-bold mb-4 text-gray-600">{{ __('CARGAR ARCHIVO EN LA CARPETA: ') }}
                         {{ $carpeta->nombre }}"
                     </h2>
-                    <form action="#" class="dropzone" id="mi-dropzone" enctype="multipart/form-data" method="POST">
-                        @csrf    
-                        <div class="fallback">                      
-                            <input type="file" name="file" multiple class="border rounded px-3 py-2 w-full mb-4  text-gray-600">   
-                        </div>         
-                    </form>                 
+                    <form action="{{route('mi_unidad.subir_archivo', ['carpeta' => $carpeta->id])}}"
+                     class="dropzone" id="mi-dropzone" enctype="multipart/form-data" method="POST">
+                        @csrf
+                         <input type="hidden" name="carpeta_id" value="{{ $carpeta->id }}">
+                          <input type="hidden" name="carpeta_nombre" value="{{$carpeta->nombre}}">
+                        <div class="fallback">
+                            <input type="file" name="file" multiple class="border rounded px-3 py-2 w-full mb-4  text-gray-600" enctype="multipart/form-data">
+                        </div>
+                    </form>
                 </div>
             </div>
 

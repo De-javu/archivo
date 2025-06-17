@@ -17,7 +17,7 @@ return new class extends Migration
             
             $table->unsignedBigInteger('carpeta_id') // Define una columna 'carpeta_id' de tipo unsignedBigInteger para gran tamaño
                   ->nullable(); // Permite que un archivo no tenga carpeta, dando flexibilidad a la estructura jerárquica
-            
+                  
             $table->foreign('carpeta_id') // Define una columna 'carpeta_id' como clave foránea
                   ->references('id') // Hace referencia a la columna 'id' de la tabla 'carpetas'
                   ->on('carpetas') // Indica que la relación es con la tabla 'carpetas'
