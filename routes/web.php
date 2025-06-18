@@ -39,8 +39,8 @@ Route::middleware(['auth'])->group(function () {
 
     //Rutas para subir archivos a una carpeta
     Route::post('/mi_unidad/{carpeta}/subir_archivo', [ArchivoController::class, 'upload'])->name('mi_unidad.subir_archivo');
-
-
+    
 });
+
 
 require __DIR__.'/auth.php';

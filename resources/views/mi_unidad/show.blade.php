@@ -319,6 +319,58 @@
 
     @endif
 
+<hr>
+ {{--Se crea la session de la tabala para mostarr los archivos de uan carpeta--}} 
+<table>
+   <thead>        
+        <tr>
+            <th>Numero</th>
+            <th>Nombre</th>
+            <th>Ruta</th>
+            <th>Fechas</th>
+            <th>Accion</th>
+        </tr>
+   </thead>
+   <tbody>
+       {{--Se traenm los archivos desde la base de datos para listarlos en la tabla--}} 
+       @foreach($archivos as $archivo)
+        @php
+          $extension = pathinfo($archivo->nombre, PATHINFO_EXTENSION);
+        @endphp
+       
+         <tr>
+            <td>{{$loop->iteration}}</td>
+            <td>{{$archivo->nombre}}</td>
+            <td>{{$archivo->ruta }}</td>
+            <td>{{$archivo->created_at}}</td>
+            <td>
+                
+                @if($extension == "png") 
+                   <img src="{{url('/iconos_img/png.png')}}" alt="" >
+                @elseif($extension == "pdf")
+                   <img src="{{url('/iconos_img/pdf.png')}}" alt="" >
+                @elseif($extension == "doc")
+                   <img src="{{url('/iconos_img/doc.png')}}" alt="" >
+                @elseif($extension == "doc")
+                   <img src="{{url('/iconos_img/jpg.png')}}" alt="" >
+                @else
+                 <h1>No identificado </h1>              
+                
+                
+                
+                @endif
+            </td>
+
+        </tr>
+       @endforeach
+
+   </tbody>
+</table>
+
+
+
+
+
     {{-- Script para cerrar el modal al hacer click fuera del contenido --}}
     <script>
         document.addEventListener('click', function (event) {

@@ -44,14 +44,15 @@ class CarpetaController extends Controller
     public function show(Carpeta $carpeta)
     {
         
-        $carpeta = Carpeta::with('archivos') // Cargacon los archivos 
+        $carpeta = Carpeta::with('archivos') // Carga con los archivos
         ->findOrFail($carpeta->id);// Busca la carpeta por su ID y lanza una excepción si no se encuentra
 
-        $subcarpetas = Carpeta::with('carpetasHijas')
-        ->where('carpeta_padre_id', $carpeta->id)
-        ->get();
+        $subcarpetas = Carpeta::with('carpetasHijas') // Cargacon las subcarpetas
+        ->where('carpeta_padre_id', $carpeta->id) // Filtra las subcarpetas que pertenecen a la carpeta actual
+        ->get(); // Obtiene las subcarpetas de la carpeta actual
         
-        return view('mi_unidad.show', compact('carpeta', 'subcarpetas'));
+        $archivos = $carpeta->archivos;
+        return view('mi_unidad.show', compact('carpeta', 'subcarpetas', 'archivos'));
     }
 
     /**

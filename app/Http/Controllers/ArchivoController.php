@@ -24,23 +24,27 @@ class ArchivoController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Carpeta $carpeta)
     {
-        //
+       
+
     }
+    
 
     /**
      * Display the specified resource.
      */
-    public function show(Archivo $archivo)
+    public function show()
     {
-        //
+
+    
+
     }
 
     /**
@@ -77,10 +81,16 @@ class ArchivoController extends Controller
         if ($file && $carpeta_id && $carpeta_nombre) { // Se realiza un ultimo filtro para validara que los datos necesarios estén presentes
             $file_Name = time() . '_' . $file->getClientOriginalName(); // Genera un nombre único para el archivo
             $ruta = $file->storeAs('archivo/'. $carpeta_id .'_'.$carpeta_nombre, $file_Name,'public'); // Guarda el archivo en la carpeta especificada en el disco 'public'
-        }       
-    }
+             
+    
       // se carga a la base de datos.
       $archivo = new Archivo();
-      $archivo->nombre = $file_name;
-      
+      $archivo->nombre = $file_Name;
+      $archivo->ruta = $ruta; // Asigna la ruta del archivo
+      $archivo->carpeta_id = $carpeta_id; // Asigna el ID de la carpeta
+
+
+      $archivo->save(); // Guarda el modelo en la base de datos
+    } 
+ } 
 }
