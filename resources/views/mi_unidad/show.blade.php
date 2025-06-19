@@ -319,54 +319,49 @@
 
     @endif
 
-<hr>
  {{--Se crea la session de la tabala para mostarr los archivos de uan carpeta--}} 
-<table>
-   <thead>        
+<div class="overflow-x-auto rounded-lg shadow-md m-6">
+ <table class="min-w-full  rounded-t-lg ">
+   <thead class="bg-gray-700 rounded-t-lg">        
         <tr>
-            <th>Numero</th>
-            <th>Nombre</th>
-            <th>Ruta</th>
-            <th>Fechas</th>
-            <th>Accion</th>
+            <th class="text-center px-4 py-4 font-semibold text-gray-200">#</th>
+            <th class="text-center px-4 py-4 font-semibold text-gray-200">Nombre</th>
+            <th class="text-center px-4 py-4 font-semibold text-gray-200">Fechas</th>
+            <th class="text-center px-4 py-4 font-semibold text-gray-200">Accion</th>
         </tr>
    </thead>
-   <tbody>
+   <tbody class="bg-gray divide-y divide-gray-500">
        {{--Se traenm los archivos desde la base de datos para listarlos en la tabla--}} 
        @foreach($archivos as $archivo)
         @php
           $extension = pathinfo($archivo->nombre, PATHINFO_EXTENSION);
         @endphp
        
-         <tr>
-            <td>{{$loop->iteration}}</td>
-            <td>{{$archivo->nombre}}</td>
-            <td>{{$archivo->ruta }}</td>
-            <td>{{$archivo->created_at}}</td>
-            <td>
-                
-                @if($extension == "png") 
-                   <img src="{{url('/iconos_img/png.png')}}" alt="" >
-                @elseif($extension == "pdf")
-                   <img src="{{url('/iconos_img/pdf.png')}}" alt="" >
-                @elseif($extension == "doc")
-                   <img src="{{url('/iconos_img/doc.png')}}" alt="" >
-                @elseif($extension == "doc")
-                   <img src="{{url('/iconos_img/jpg.png')}}" alt="" >
-                @else
-                 <h1>No identificado </h1>              
-                
-                
-                
-                @endif
+         <tr class="hover:bg-gray-800 transition-color duration-200">
+            <td class="text-center">{{$loop->iteration}}</td>
+             <td class="text-center">
+                <div class="flex items-center justify-left space-x-2 py-2 px-4 ">                    
+                    @if($extension == "png") 
+                        <img src="{{url('/iconos_img/png.png')}}" alt="" class="w-8 h-8 object-cover " >
+                    @elseif($extension == "pdf")
+                        <img src="{{url('/iconos_img/pdf.png')}}" alt="" class="w-8 h-8 object-cover" >
+                    @elseif($extension == "doc")
+                        <img src="{{url('/iconos_img/doc.png')}}" alt="" class="w-8 h-8 object-cover">
+                    @elseif($extension == "doc")
+                        <img src="{{url('/iconos_img/jpg.png')}}" alt="" class="w-4 h-4 object-cover">
+                    @else
+                         <img src="{{url('/iconos_img/desconocido.png')}}" alt="" class="w-8 h-8 object-cover">                          
+                    @endif
+                   <span class="trucante max-w-xs ">{{$archivo->nombre}}</span>                    
+                </div>
             </td>
-
+            <td class="text-center">{{$archivo->created_at}}</td>
+            <td class="text-center">{{}}</td>
         </tr>
        @endforeach
-
    </tbody>
-</table>
-
+ </table>
+</div>
 
 
 
