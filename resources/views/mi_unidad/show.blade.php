@@ -1,4 +1,5 @@
 <x-layouts.app>
+    
     {{-- Extiende el layout principal --}}
     <x-slot name="title">
         {{ __('Sub_Carpeta') }}
@@ -279,13 +280,8 @@
                                             <div class="text-red-500 text-xs mb-2">
                                                 {{ $message }}
                                             </div>
-                                        @enderror                                    
-                                                            
-
-                                        
-                                         
+                                        @enderror    
                                     </form>  
-
                                 </div>
                             </div>
                         </div>
@@ -352,7 +348,11 @@
                     @else
                          <img src="{{url('/iconos_img/desconocido.png')}}" alt="" class="w-8 h-8 object-cover">                          
                     @endif
-                   <span class="trucante max-w-xs ">{{$archivo->nombre}}</span>                    
+                   <span class="trucante max-w-xs ">
+                       <a href="{{Storage::url('archivo/' . $carpeta->id . '_' . Str::slug($carpeta->nombre) . '/' . $archivo->nombre)}}">
+                         {{$archivo->nombre}}
+                      </a>                    
+                   </span>                    
                 </div>
             </td>
             <td class="text-center">{{$archivo->created_at}}</td>
