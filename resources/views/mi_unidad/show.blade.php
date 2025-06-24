@@ -172,7 +172,7 @@
                                 <span class="text-gray-900 m-2 hover:text-gray-400">Abrir</span>
                             </a>
 
-                          {{-- Se crea el Modela para editar el nombre d ela carpeta--}}
+                          {{-- Se crea el Modela para editar el nombre de la carpeta--}}
                             <div id="edit-modal-{{$subcarpeta->id}}"
                                 class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden"                                
                                 onclick="if(event.target === this) this.style.display='none'">
@@ -315,7 +315,7 @@
 
     @endif
 
- {{--Se crea la session de la tabala para mostarr los archivos de uan carpeta--}} 
+ {{--Se crea la session de la tabla para mostrar los archivos de una carpeta--}} 
 <div class="overflow-x-auto rounded-lg shadow-md m-6">
  <table class="min-w-full  rounded-t-lg ">
    <thead class="bg-gray-700 rounded-t-lg">        
@@ -330,7 +330,7 @@
        {{--Se traenm los archivos desde la base de datos para listarlos en la tabla--}} 
        @foreach($archivos as $archivo)
         @php
-          $extension = pathinfo($archivo->nombre, PATHINFO_EXTENSION);
+          $extension = strtolower(pathinfo($archivo->nombre, PATHINFO_EXTENSION));
         @endphp
        
          <tr class="hover:bg-gray-800 transition-color duration-200">
@@ -341,17 +341,24 @@
                         <img src="{{url('/iconos_img/png.png')}}" alt="" class="w-8 h-8 object-cover " >
                     @elseif($extension == "pdf")
                         <img src="{{url('/iconos_img/pdf.png')}}" alt="" class="w-8 h-8 object-cover" >
-                    @elseif($extension == "doc")
-                        <img src="{{url('/iconos_img/doc.png')}}" alt="" class="w-8 h-8 object-cover">
-                    @elseif($extension == "doc")
-                        <img src="{{url('/iconos_img/jpg.png')}}" alt="" class="w-4 h-4 object-cover">
+                    @elseif($extension == "docx")
+                        <img src="{{url('/iconos_img/docx.png')}}" alt="" class="w-8 h-8 object-cover">
+                    @elseif($extension == "xlsx")
+                        <img src="{{url('/iconos_img/xlsx.png')}}" alt="" class="w-8 h-8 object-cover">
+                    @elseif($extension == "jpg" || $extension== "jpeg")
+                        <img src="{{url('/iconos_img/jpg.png')}}" alt="" class="w-8 h-8 object-cover">
+                    @elseif($extension == "mp3")
+                        <img  src="{{url('/iconos_img/mp3.png')}}" alt="" class="w-8 h-8 object-cover">
+                    @elseif($extension == "mp4")
+                        <img src="{{url('/iconos_img/mp4.png')}}" alt="" class="w-8 h-8 object-cover">
                     @else
                          <img src="{{url('/iconos_img/desconocido.png')}}" alt="" class="w-8 h-8 object-cover">                          
                     @endif
+                    {{--Se crea un componente para que el link se abra en otra pantalla --}}
                    <span class="trucante max-w-xs ">
-                       <a href="{{Storage::url('archivo/' . $carpeta->id . '_' . Str::slug($carpeta->nombre) . '/' . $archivo->nombre)}}">
+                       <x-archivo-link :href="Storage::url('archivo/' . $carpeta->id . '_' . Str::slug($carpeta->nombre) . '/' . $archivo->nombre)">
                          {{$archivo->nombre}}
-                      </a>                    
+                       </x-archivo-link>                    
                    </span>                    
                 </div>
             </td>
