@@ -9,6 +9,7 @@ use App\Models\Carpeta;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ArchivoController extends Controller
 {
@@ -69,7 +70,12 @@ class ArchivoController extends Controller
      */
     public function destroy(Archivo $archivo)
     {
-        //
+        
+        Storage::disk('public')->delete($archivo->ruta);
+        $archivo->delete();
+        return redirect()->back()->with('secces', 'Archivo eliminado correctamnete');
+        
+
     }
 
    

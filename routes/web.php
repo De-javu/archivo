@@ -37,9 +37,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/mi_unidad/carpeta/{carpeta}', [CarpetaController::class, 'destroy'])->name('mi_unidad.destroy');
 
 
-    //Rutas para subir archivos a una carpeta
+    //Rutas para archivos a una carpeta
     Route::post('/mi_unidad/{carpeta}/subir_archivo', [ArchivoController::class, 'upload'])->name('mi_unidad.subir_archivo');
-    
+    Route::delete('/mi_unidad/archivo/{archivo}', [ArchivoController::class,'destroy'])->name('mi_unidad.eliminar_archivo');
 });
 
 
