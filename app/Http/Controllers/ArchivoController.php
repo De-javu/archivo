@@ -71,10 +71,9 @@ class ArchivoController extends Controller
     public function destroy(Archivo $archivo)
     {
         
-        Storage::disk('public')->delete($archivo->ruta);
-        $archivo->delete();
-        return redirect()->back()->with('secces', 'Archivo eliminado correctamnete');
-        
+        Storage::disk('public')->delete($archivo->ruta); // Se encarga d eeliminar el archivo d ela carpeta public
+        $archivo->delete(); // elimina en la base  de datos
+        return redirect()->back()->with('secces', 'Archivo eliminado correctamnete'); //redirecciona a ala vista deseada
 
     }
 

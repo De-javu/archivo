@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('nombre'); // Define una columna 'nombre' de tipo string
             
+                             
+ 
             $table->unsignedBigInteger('carpeta_id') // Define una columna 'carpeta_id' de tipo unsignedBigInteger para gran tamaño
-                  ->nullable(); // Permite que un archivo no tenga carpeta, dando flexibilidad a la estructura jerárquica
+                  ->nullable(); // Permita valores nulos, un archivo puede existir sin estara sociado a una carpeta
                   
             $table->foreign('carpeta_id') // Define una columna 'carpeta_id' como clave foránea
                   ->references('id') // Hace referencia a la columna 'id' de la tabla 'carpetas'
@@ -24,7 +26,8 @@ return new class extends Migration
                   ->onUpdate('cascade') // Si se actualiza una carpeta, se actualizarán también sus archivos
                   ->onDelete('cascade'); // Si se elimina una carpeta, se eliminarán también sus archivos
             
-                $table->timestamps();
+            
+            $table->timestamps();
         });
     }
 

@@ -16,6 +16,7 @@ class CarpetaController extends Controller
     public function index()
     {
         $carpetas = Carpeta::whereNull('carpeta_padre_id') // Obtiene las carpetas que no tienen carpeta padre
+            ->where('user_id', auth()->id())
             ->with(['carpetasHijas', 'archivos']) // Carga las carpetas hijas y archivos relacionados
             ->get();// Obtiene todas las carpetas principales despues de aplicar las condiciones anteriores
       return view('mi_unidad.index', compact('carpetas')); // Retorna la vista con las carpetas y archivos
@@ -34,7 +35,12 @@ class CarpetaController extends Controller
      */
     public function store(StoreCarpetaRequest $request)
 {
-    Carpeta::create(['nombre' => $request->nombre]);    // Crea una nueva carpeta con el nombre proporcionado en la solicitud, que recibe de un formualrio de creación de carpetas
+    Carpeta::create([
+        'nombre' => $request->nombre,
+        'user_id' => auth()->id(),
+        'carpeta_padre_id' => $request->carpeta_padre_id ?? null, //si se usa sub carpeta
+
+]);    // Crea una nueva carpeta con el nombre proporcionado en la solicitud, que recibe de un formualrio de creación de carpetas
     return redirect()->route('mi_unidad.index')->with('success', 'Carpeta creada'); // Redirige a la ruta 'mi_unidad.index' con un mensaje de éxito
 }
 
@@ -121,6 +127,7 @@ class CarpetaController extends Controller
     $carpeta = new Carpeta();
     $carpeta->nombre = $request->nombre;
     $carpeta->carpeta_padre_id = $request->carpeta_padre_id;
+    $carpeta->user_id =auth()->id();
     $carpeta->save();
 
     return redirect()->route('mi_unidad.carpeta', $carpeta->id)->with('success', 'Subcarpeta creada');
