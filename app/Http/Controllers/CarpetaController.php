@@ -16,7 +16,7 @@ class CarpetaController extends Controller
     public function index()
     {
         $carpetas = Carpeta::whereNull('carpeta_padre_id') // Obtiene las carpetas que no tienen carpeta padre
-            ->where('user_id', auth()->id())
+            ->where('user_id', auth()->id()) // Filtra las carpetas para que solo muestre las del usuario autenticado
             ->with(['carpetasHijas', 'archivos']) // Carga las carpetas hijas y archivos relacionados
             ->get();// Obtiene todas las carpetas principales despues de aplicar las condiciones anteriores
       return view('mi_unidad.index', compact('carpetas')); // Retorna la vista con las carpetas y archivos
@@ -73,10 +73,12 @@ class CarpetaController extends Controller
      * Update the specified resource in storage.
      */
     public function update(StoreCarpetaRequest $request, Carpeta $carpeta)
-    {
+    { 
+
+
        $carpeta = Carpeta::findOrFail($carpeta->id); // Busca la carpeta por su ID y lanza una excepción si no se encuentra
-       $carpeta->nombre = $request->nombre;
-       $carpeta->save();
+       $carpeta->nombre = $request->nombre; // Asigna el nuevo nombre de la carpeta desde la solicitud
+       $carpeta->save(); // Guarda los cambios en la carpeta en la base de datos
 
        
 
@@ -99,7 +101,10 @@ class CarpetaController extends Controller
      */
     public function destroy(DeleteCarpetaRequest $request, Carpeta $carpeta)
     {
-       
+       // Se valida que el usuario autenticado sea el propietario de la carpeta antes de eliminarla
+        if ($carpeta->user_id !== auth()->id()) {
+        abort(403, 'No tienes permiso para eliminar esta carpeta.');
+    }
 
         $carpeta = Carpeta::findOrFail($carpeta->id); // Busca la carpeta por su ID y lanza una excepción si no se encuentra
         $carpeta->delete(); // Elimina la carpeta de la base de datos
@@ -124,11 +129,11 @@ class CarpetaController extends Controller
         return redirect()->back()->withErrors(['nombre' => 'No puedes crear más de 4 niveles de subcarpetas.']);
     }
 
-    $carpeta = new Carpeta();
-    $carpeta->nombre = $request->nombre;
-    $carpeta->carpeta_padre_id = $request->carpeta_padre_id;
-    $carpeta->user_id =auth()->id();
-    $carpeta->save();
+    $carpeta = new Carpeta(); // Crea una nueva instancia de Carpeta
+    $carpeta->nombre = $request->nombre; // Asigna el nombre de la subcarpeta desde la solicitud
+    $carpeta->carpeta_padre_id = $request->carpeta_padre_id;// Asigna el ID de la carpeta padre desde la solicitud
+    $carpeta->user_id = auth()->id(); // Asigna el ID del usuario autenticado a la carpeta
+    $carpeta->save(); // Guarda la nueva subcarpeta en la base de datos
 
     return redirect()->route('mi_unidad.carpeta', $carpeta->id)->with('success', 'Subcarpeta creada');
     }

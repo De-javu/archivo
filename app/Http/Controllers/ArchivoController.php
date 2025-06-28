@@ -42,12 +42,15 @@ class ArchivoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show()
-    {
+      public function showArchivos(Carpeta $carpeta)
+        {
+            $archivos = $carpeta->archivos->map(function ($archivo) {
+            $archivo->url_temporal = asset('storage/' . $archivo->ruta);
+            return $archivo;
+        });
 
-    
-
-    }
+        return view('mi_unidad.show', compact('carpeta', 'archivos'));
+        }
 
     /**
      * Show the form for editing the specified resource.

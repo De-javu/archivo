@@ -252,7 +252,7 @@
 
                                                 <div id="error-nombre-{{ $subcarpeta->id }}" class="text-red-500 text-xs mb-2"></div>
 
-                                                <div class="flex justify-end gap-2">
+                                        <div class="flex justify-end gap-2">
                                             <button type="button"
                                                 onclick="document.getElementById('eliminar-modal-{{$subcarpeta->id}}').style.display='none'"
                                                 class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500">
@@ -363,25 +363,71 @@
                 </div>
             </td>
             <td class="text-center">{{$archivo->created_at}}</td>
-            {{-- Se crea en la tablaen en la casilla de accion descargar, editar, eliminar --}}
-            <td>
-                <form action="{{ route('mi_unidad.eliminar_archivo', $archivo->id) }}" method="POST">                        
-                      @csrf
-                      @method('delete') 
-                    <input type="text" value="{{$archivo->id}}">
-                    <button type="submit" class="px-4 py-2 bg-red-700 text-white rounded hover:bg-red-500">   
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"stroke="currentColor" class="size-6">
+            {{-- Se crea en la tabla  en la casilla de accion descargar,eliminar --}}
+        <td> 
+                {{-- Boton eliminar --}}          
+                <button type="" class="px-2 py-1 bg-red-700 rounded hover:bg-red-500">   
+                        <a href="#" class="px-2 py-1 text-write-900 flex items-center"
+                               onclick="document.getElementById('eliminar-modal-accion-{{$archivo->id}}').style.display='flex'">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                 d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                            </svg>
-                    </button>
-                    <button type="submit" class="px-4 py-2 bg-green-700 text-white rounded hover:bg-green-500">   
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                               <path stroke-linecap="round" stroke-linejoin="round" d="M12 9.75v6.75m0 0-3-3m3 3 3-3m-8.25 6a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
-                            </svg>
-                    </button>
-                </form>
-            </td>
+                                </svg>
+                        </a>
+                </button>
+                {{-- Boton Descargar --}}
+                <button type="submit" class="px-4 py-2 bg-green-700 text-white rounded hover:bg-green-500">  
+                    <x-archivo-link :href="Storage::url('archivo/' . $carpeta->id . '_' . Str::slug($carpeta->nombre) . '/' . $archivo->nombre)"
+                        download>                      
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9.75v6.75m0 0-3-3m3 3 3-3m-8.25 6a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
+                                </svg>
+                    </x-archivo-link> 
+                </button>
+
+                  {{-- Boton copiar link --}}
+                <button type="button" class="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-500" 
+                   type="button"
+                                class="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-500 flex items-center justify-center"
+                                onclick="navigator.clipboard.writeText('{{ url(Storage::url('archivo/' . $carpeta->id . '_' . Str::slug($carpeta->nombre) . '/' . $archivo->nombre)) }}'); alert('¡Enlace copiado!')">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+                                </svg>
+                
+                </button>
+              {{-- Modal de la accion eliminar --}}
+             <div id="eliminar-modal-accion-{{$archivo->id}}"
+                    class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden"                                
+                    onclick="if(event.target === this) this.style.display='none'">
+                    <div class="bg-white p-6 rounded shadow-lg w-full max-w-md mx-auto flex flex-col">
+                        <h2 class="text-lg font-bold mb-4 text-gray-600">
+                                {{ __('Se eliminara e archivo: ' )}}
+                                <div class="text-red-500">
+                                      {{$archivo->nombre}}
+                                </div>  
+                        </h2>                 
+                       <form action="{{ route('mi_unidad.eliminar_archivo', $archivo->id) }}" method="POST">                        
+                             @csrf
+                            @method('delete') 
+                            <input type="text" name="nombre" id="input-nombre-{{ $archivo->id }}">
+                            <div
+                                id="error-nombre-{{ $archivo->id }}" class="text-red-500 text-xs mb-2">
+                            </div>                      
+
+                               <div class="flex justify-end gap-2">
+                                    <button type="button"
+                                            onclick="document.getElementById('eliminar-modal-accion-{{$archivo->id}}').style.display='none'"
+                                            class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500">
+                                            {{ __('Cancelar') }}
+                                   </button>
+                                   <button type="submit" class="px-4 py-2 bg-red-700 text-white rounded hover:bg-red-500">
+                                      {{ __('Eliminar') }}
+                                   </button>
+                             </div>
+                      </form>
+                 </div>
+            </div>
+          </td>
         </tr>
        @endforeach
    </tbody>
