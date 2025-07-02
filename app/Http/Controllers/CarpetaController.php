@@ -6,12 +6,13 @@ use App\Http\Requests\DeleteCarpetaRequest;
 use App\Http\Requests\StoreCarpetaRequest;
 use App\Http\Requests\StoreSubCarpetaRequest;
 use App\Models\Carpeta;
+use Illuminate\Support\Facades\Storage;
 
 
 class CarpetaController extends Controller
 {
     /**
-     * Se encraga de mostrar las carpetas y archivos de la unidad del usuario.
+     * Se encarga de mostrar las carpetas y archivos de la unidad del usuario.
      */
     public function index()
     {
@@ -31,16 +32,17 @@ class CarpetaController extends Controller
     }
 
     /**
-     * Es el metodo que s eencarag de almacenar una nueva carpeta en la base de datos.
+     * Es el metodo que se encarga de almacenar una nueva carpeta en la base de datos.
      */
     public function store(StoreCarpetaRequest $request)
 {
-    Carpeta::create([
-        'nombre' => $request->nombre,
-        'user_id' => auth()->id(),
-        'carpeta_padre_id' => $request->carpeta_padre_id ?? null, //si se usa sub carpeta
+    // Crea una nueva carpeta con el nombre proporcionado en la solicitud, que recibe de un formualrio de creación de carpetas
+    Carpeta::create([ // Se crea llama el metodo crear por medio del ORM 
+        'nombre' => $request->nombre, // Se recoge el nombre de la validacion
+        'user_id' => auth()->id(), // Se recoge el usuario logeadop, para validar que es el mimos que crea
+        'carpeta_padre_id' => $request->carpeta_padre_id ?? null, // Si se crea una sub, carpeta se ahblita de lo contrario enteinde que no se crea y lo llama null
 
-]);    // Crea una nueva carpeta con el nombre proporcionado en la solicitud, que recibe de un formualrio de creación de carpetas
+]);   
     return redirect()->route('mi_unidad.index')->with('success', 'Carpeta creada'); // Redirige a la ruta 'mi_unidad.index' con un mensaje de éxito
 }
 
@@ -70,43 +72,40 @@ class CarpetaController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Se crea un controlador para la actualizacion de una carpeta
      */
     public function update(StoreCarpetaRequest $request, Carpeta $carpeta)
     { 
-
-
-       $carpeta = Carpeta::findOrFail($carpeta->id); // Busca la carpeta por su ID y lanza una excepción si no se encuentra
+       $carpeta = Carpeta::findOrFail($carpeta->id); // Busca la carpeta por su ID y lanza una excepción si no se encuentra 
        $carpeta->nombre = $request->nombre; // Asigna el nuevo nombre de la carpeta desde la solicitud
-       $carpeta->save(); // Guarda los cambios en la carpeta en la base de datos
-
-       
-
+       $carpeta->save(); // Guarda los cambios en la carpeta en la base de datos     
        
       if($carpeta->carpeta_padre_id)
       {
         // si la carpeta no tiene una carpeta padre se redigira a la vista de la unidad
-        return redirect()->route('mi_unidad.carpeta', $carpeta->carpeta_padre_id)
-        ->with('success', 'Carpeta actualizada'); // Redirige a la ruta 'mi_unidad.index' con un mensaje de éxito
+        return redirect()->route('mi_unidad.carpeta', $carpeta)
+               ->with('success', 'Carpeta actualizada'); // Redirige a la ruta 'mi_unidad.index' con un mensaje de éxito
       }
       else
       {
         return redirect()->route('mi_unidad.index')
-        ->with('success', 'Carpeta actualizada'); // Redirige a la ruta 'mi_unidad.index' con un mensaje de éxito
+             ->with('success', 'Carpeta actualizada'); // Redirige a la ruta 'mi_unidad.index' con un mensaje de éxito
       }
 
     }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(DeleteCarpetaRequest $request, Carpeta $carpeta)
     {
        // Se valida que el usuario autenticado sea el propietario de la carpeta antes de eliminarla
-        if ($carpeta->user_id !== auth()->id()) {
+        if ($carpeta->user_id !== auth()->id() && !auth()->user()->hasRole('admin')) {
         abort(403, 'No tienes permiso para eliminar esta carpeta.');
     }
 
         $carpeta = Carpeta::findOrFail($carpeta->id); // Busca la carpeta por su ID y lanza una excepción si no se encuentra
+        Storage::disk('public')->deleteDirectory('archivo/'.$carpeta->id.'_'.$carpeta->nombre ); // toca costruir la ruta para eliminar el directorio para eliminar desde el directorio 
         $carpeta->delete(); // Elimina la carpeta de la base de datos
 
         return redirect()->route('mi_unidad.index')->with('success', 'Carpeta eliminada'); // Redirige a la ruta 'mi_unidad.index' con un mensaje de éxito
@@ -117,11 +116,11 @@ class CarpetaController extends Controller
 
    {
     // Calcula la profundidad de la subcarpeta
-    $profundidad = 1;
-    $padre = Carpeta::find($request->carpeta_padre_id);
-    while ($padre && $padre->carpeta_padre_id) {
-        $profundidad++;
-        $padre = Carpeta::find($padre->carpeta_padre_id);
+    $profundidad = 1; // contador
+    $padre = Carpeta::find($request->carpeta_padre_id); // Busca la carpeta padre de la subcarpeta seleccionada
+    while ($padre && $padre->carpeta_padre_id) {            // Mientras haya una carpeta padre, sigue subiendo en la jerarquía
+        $profundidad++;                                     // Incrementa la profundidad  
+        $padre = Carpeta::find($padre->carpeta_padre_id); // Busca la carpeta padre de la carpeta actual
     }
 
     // Limita la profundidad máxima (por ejemplo, 4)
