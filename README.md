@@ -53,3 +53,101 @@ php artisan migrate        # Migrar base de datos
 ---
 
 > _Este archivo README.md es una guía básica. Puedes ampliarlo con instrucciones de instalación, dependencias, ejemplos de uso, etc._
+
+
+# Laravel Archivos - Sistema de Gestión de Carpetas con Roles y Permisos
+
+## Descripción
+
+Aplicación web desarrollada en Laravel para la gestión de carpetas y archivos, con control de acceso basado en roles y permisos usando el paquete [spatie/laravel-permission](https://spatie.be/docs/laravel-permission/v5/introduction).
+
+## Características
+
+- Gestión de carpetas y subcarpetas con límite de profundidad.
+- Gestión de archivos dentro de carpetas.
+- Sistema de roles: `admin` y `user`.
+- Sistema de permisos: crear y eliminar carpetas.
+- Solo el usuario con rol `admin` puede eliminar cualquier carpeta; los usuarios solo pueden eliminar sus propias carpetas.
+- Interfaz protegida por autenticación.
+- Mensajes de éxito y error en las operaciones.
+
+## Instalación
+
+1. **Clona el repositorio:**
+   ```sh
+   git clone <url-del-repositorio>
+   cd <nombre-del-proyecto>
+   ```
+
+2. **Instala las dependencias:**
+   ```sh
+   composer install
+   npm install && npm run dev
+   ```
+
+3. **Configura el archivo `.env`:**
+   - Copia `.env.example` a `.env` y configura tu base de datos y otras variables.
+
+4. **Genera la clave de la aplicación:**
+   ```sh
+   php artisan key:generate
+   ```
+
+5. **Ejecuta las migraciones y seeders:**
+   ```sh
+   php artisan migrate
+   php artisan db:seed --class=RolesPermisosSeeder
+   ```
+
+6. **Configura el almacenamiento público (opcional):**
+   ```sh
+   php artisan storage:link
+   ```
+
+## Uso de Roles y Permisos
+
+- El usuario con email `andrespardo5151@gmail.com` es asignado automáticamente como `admin` en el seeder.
+- Los usuarios con rol `admin` pueden crear y eliminar cualquier carpeta.
+- Los usuarios con rol `user` solo pueden crear carpetas y eliminar las que les pertenecen.
+
+## Estructura de Carpetas
+
+- Las carpetas pueden tener subcarpetas hasta un máximo de 4 niveles de profundidad.
+- Los archivos se almacenan en `storage/app/public/archivo/{id}_{nombre}`.
+
+## Ejemplo de Control de Permisos en Controladores
+
+```php
+if ($carpeta->user_id !== auth()->id() && !auth()->user()->hasRole('admin')) {
+    abort(403, 'No tienes permiso para eliminar esta carpeta.');
+}
+```
+
+## Ejemplo de Uso en Vistas Blade
+
+```blade
+@role('admin')
+    <button>Eliminar cualquier carpeta</button>
+@endrole
+
+@can('crear carpetas')
+    <button>Crear carpeta</button>
+@endcan
+```
+
+## Testing
+
+- Puedes crear tests con PHPUnit para verificar la lógica de roles, permisos y operaciones sobre carpetas y archivos.
+- Ejecuta los tests con:
+  ```sh
+  php artisan test
+  ```
+
+## Créditos
+
+- [Laravel](https://laravel.com/)
+- [spatie/laravel-permission](https://github.com/spatie/laravel-permission)
+
+## Licencia
+
+Este proyecto está bajo la licencia MIT.
