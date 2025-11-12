@@ -60,9 +60,9 @@ class User extends Authenticatable
             ->implode('');
     }
 
-
-    public function carpetas()
+// relacion uno a muchos
+    public function carpetas()// relacion uno a muchos
 {
-    return $this->hasMany(Carpeta::class, 'user_id');
+    return $this->hasMany(Carpeta::class, 'user_id'); // un usuario puede tener muchas carpetas
 }
 }

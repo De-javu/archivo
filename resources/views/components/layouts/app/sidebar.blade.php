@@ -16,17 +16,17 @@
         <flux:navlist variant="outline">
             <flux:navlist.group :heading="__('Platform')" class="grid">
                 <flux:navlist.item
-                     icon="home" :href="route('dashboard')" 
-                     :current="request()->routeIs('dashboard')" 
+                     icon="home" :href="route('dashboard')"
+                     :current="request()->routeIs('dashboard')"
                      wire:navigate>{{ __('Dashboard') }}
                 </flux:navlist.item>
-    
-           {{-- Creacion de carpetas y vistas de la aplicación      --}}
-                <flux:navlist.item 
-                    icon="folder" 
-                    :href="route('mi_unidad.index')" 
-                    :current="request()->routeIs('mi_unidad.index')"
-                    wire:navigate>{{ __('Folders') }}
+
+           {{-- Creacion de carpetas y vistas de la aplicación   --}}
+                <flux:navlist.item
+                    icon="folder" {{-- icono e folder--}}
+                    :href="route('mi_unidad.index')"{{-- ruta de vista --}}
+                    :current="request()->routeIs('mi_unidad.index')" {{-- verifica si la ruta actual es la de "Mi Unidad" --}}
+                    wire:navigate>{{ __('Folders') }} {{-- Nombre de la vista --}}
                 </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
