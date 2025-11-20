@@ -223,8 +223,8 @@ environment:
 
 Reconstruir:
 ```bash
-docker-compose down -v
-docker-compose up -d
+docker-compose down -v  # Eliminar volúmenes
+docker-compose up -d    # Levantar servicios
 ```
 
 ---
@@ -341,6 +341,13 @@ Por eso `DB_HOST=mysql` en `.env`
 5. ⏭️ **Fase 5:** Terraform
 
 ---
+
+Nota Final:
+**Autor:** Para arrancar el proyecto debes navegar a la carpeta raíz ejemplo:
+- cd /mnt/d/xampp/htdocs/Laravelpracticas/archivosdel  , rutar
+- `docker-compose up -d` : Comado para levantar los contenedores en segundo plano.
+- http://localhost:8080 : para ver la aplicación en el navegador.
+- docker-compose logs -f :  si se necesitan ver nginx para ver logs de Nginx. 
 
 **Documentado:** 13 de noviembre de 2025  
 **Estado:** ✅ COMPLETADO Y FUNCIONANDO  

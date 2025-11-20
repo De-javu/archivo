@@ -30,6 +30,10 @@ Dejar el proyecto Laravel listo para funcionar en un entorno moderno y en la nub
 - Se verificó que el proyecto funcionara correctamente en local con la nueva configuración.
 - Se ejecutaron migraciones y pruebas básicas para asegurar que la base de datos y el entorno estuvieran listos.
 
+### 7. Pruebas básicas
+- Se hace un git commit con todos los cambios realizados para dejar un punto de partida limpio.
+- Se crea una rama nueva `docker-setup` para los siguientes pasos de dockerización y despliegue.
+
 ---
 
 ## Resumen

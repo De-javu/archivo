@@ -21,4 +21,5 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-.GUIA_DESPLIEGUE_AWS.md
+.guias_despliegue
+.avances.md
